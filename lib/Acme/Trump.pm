@@ -1,12 +1,23 @@
-# NAME
+#!/usr/bin/perl
+package Acme::Trump;
+use Moose;
+use namespace::autoclean;
+use Acme::Trump::Motivational;
+use Acme::Trump::Outrageous;
+
+=head1 NAME
 
 Acme::Trump - The great new Acme::Trump!
 
-# VERSION
+=head1 VERSION
 
 Version 0.01
 
-# SYNOPSIS
+=cut
+
+our $VERSION = '0.01';
+
+=head1 SYNOPSIS
 
 Quick summary of what the module does.
 
@@ -18,17 +29,71 @@ Perhaps a little code snippet.
     my $trump_outrageous = Acme::Trump->new()->o;
     ...
 
-# AUTHOR
+=cut
 
-Robert Acock, `<thisusedtobeanemail at gmail.com>`
+has 'type' => (
+    is      => 'ro',
+    isa     => 'Str',
+    lazy    => 1,
+    default => q{},
+);
 
-# BUGS
+has 'motivational' => (
+    is      => 'ro',
+    isa     => 'Acme::Trump::Motivational',
+    lazy    => 1,
+    builder => 'build_motivational',
+);
 
-Please report any bugs or feature requests to `bug-acme-trump at rt.cpan.org`, or through
-the web interface at [http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Acme-Trump](http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Acme-Trump).  I will be notified, and then you'll
+has 'outrageous' => (
+    is      => 'ro',
+    isa     => 'Acme::Trump::Outrageous',
+    lazy    => 1,
+    builder => 'build_outrageous',
+);
+
+sub quote {
+    my ( $self, $type ) = @_;
+      
+    $type ||= $self->type;  
+    return $self->$type->quote; 
+}
+
+sub m {
+    my $self = shift;
+
+    return $self->motivational->quote;
+}
+
+sub o {
+    my $self = shift;
+
+    return $self->outrageous->quote;
+}
+
+sub build_motivational { 
+    my $self = shift;
+
+    return Acme::Trump::Motivational->new();
+}
+
+sub build_outrageous {
+    my $self = shift;
+
+    return Acme::Trump::Outrageous->new();
+}
+
+=head1 AUTHOR
+
+Robert Acock, C<< <thisusedtobeanemail at gmail.com> >>
+
+=head1 BUGS
+
+Please report any bugs or feature requests to C<bug-acme-trump at rt.cpan.org>, or through
+the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Acme-Trump>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
 
-# SUPPORT
+=head1 SUPPORT
 
 You can find documentation for this module with the perldoc command.
 
@@ -36,25 +101,29 @@ You can find documentation for this module with the perldoc command.
 
 You can also look for information at:
 
-- RT: CPAN's request tracker (report bugs here)
+=over 4
 
-    [http://rt.cpan.org/NoAuth/Bugs.html?Dist=Acme-Trump](http://rt.cpan.org/NoAuth/Bugs.html?Dist=Acme-Trump)
+=item * RT: CPAN's request tracker (report bugs here)
 
-- AnnoCPAN: Annotated CPAN documentation
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Acme-Trump>
 
-    [http://annocpan.org/dist/Acme-Trump](http://annocpan.org/dist/Acme-Trump)
+=item * AnnoCPAN: Annotated CPAN documentation
 
-- CPAN Ratings
+L<http://annocpan.org/dist/Acme-Trump>
 
-    [http://cpanratings.perl.org/d/Acme-Trump](http://cpanratings.perl.org/d/Acme-Trump)
+=item * CPAN Ratings
 
-- Search CPAN
+L<http://cpanratings.perl.org/d/Acme-Trump>
 
-    [http://search.cpan.org/dist/Acme-Trump/](http://search.cpan.org/dist/Acme-Trump/)
+=item * Search CPAN
 
-# ACKNOWLEDGEMENTS
+L<http://search.cpan.org/dist/Acme-Trump/>
 
-# LICENSE AND COPYRIGHT
+=back
+
+=head1 ACKNOWLEDGEMENTS
+
+=head1 LICENSE AND COPYRIGHT
 
 Copyright 2016 Robert Acock.
 
@@ -62,7 +131,7 @@ This program is free software; you can redistribute it and/or modify it
 under the terms of the the Artistic License (2.0). You may obtain a
 copy of the full license at:
 
-[http://www.perlfoundation.org/artistic\_license\_2\_0](http://www.perlfoundation.org/artistic_license_2_0)
+L<http://www.perlfoundation.org/artistic_license_2_0>
 
 Any use, modification, and distribution of the Standard or Modified
 Versions is governed by this Artistic License. By using, modifying or
@@ -93,3 +162,7 @@ YOUR LOCAL LAW. UNLESS REQUIRED BY LAW, NO COPYRIGHT HOLDER OR
 CONTRIBUTOR WILL BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, OR
 CONSEQUENTIAL DAMAGES ARISING IN ANY WAY OUT OF THE USE OF THE PACKAGE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+=cut
+
+1; # End of Acme::Trump
