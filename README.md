@@ -1,6 +1,6 @@
 # NAME
 
-Acme::Trump - The great new Acme::Trump!
+Acme::Trump - Trump!
 
 # VERSION
 
