@@ -42,14 +42,14 @@ has 'motivational' => (
     is      => 'ro',
     isa     => 'Acme::Trump::Motivational',
     lazy    => 1,
-    builder => 'build_motivational',
+    default => sub { Acme::Trump::Motivational->new() },
 );
 
 has 'outrageous' => (
     is      => 'ro',
     isa     => 'Acme::Trump::Outrageous',
     lazy    => 1,
-    builder => 'build_outrageous',
+    default => sub { Acme::Trump::Outrageous->new() },
 );
 
 sub quote {
@@ -69,18 +69,6 @@ sub o {
     my $self = shift;
 
     return $self->outrageous->quote;
-}
-
-sub build_motivational { 
-    my $self = shift;
-
-    return Acme::Trump::Motivational->new();
-}
-
-sub build_outrageous {
-    my $self = shift;
-
-    return Acme::Trump::Outrageous->new();
 }
 
 =head1 AUTHOR
