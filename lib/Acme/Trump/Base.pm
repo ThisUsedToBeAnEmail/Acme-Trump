@@ -6,28 +6,23 @@ use Data::Dumper;
 use namespace::autoclean;
 
 has 'quotes_list' => (
+    traits => ['Array'],
     is  => 'rw',
-    isa => 'HashRef',
-    default => sub { { } },
-);
-
-has 'num_of_quotes' => (
-    is  => 'ro',
-    isa => 'Int',
-    lazy => 1,
-    default => sub {
-        return scalar keys shift->quotes_list;
-    }
+    isa => 'ArrayRef[Str]',
+    default => sub { [ ] },
+    handles => {
+	count_quotes_list => 'count',
+	get_quotes_list => 'get',		   
+    },
 );
 
 sub quote {
     my ($self) = @_;
 
-    my $max = $self->num_of_quotes;
+    my $max = $self->count_quotes_list;
 
     my $id = int(rand($max - 1)); 
-    return $self->quotes_list->{$id};
-
+    return $self->get_quotes_list($id);
 }
 
 1;
